@@ -174,8 +174,8 @@
 
   /* ---------- SCHEDULE ---------- */
   .timeline{margin-top:10px;position:relative;}
-  .t-row{display:grid;grid-template-columns:96px 1fr;gap:20px;position:relative;padding-bottom:26px;}
-  .t-row:last-child{padding-bottom:0;}
+  .t-row{display:grid;grid-template-columns:96px 1fr;gap:20px;position:relative;padding-bottom:0;}
+  .t-row:not(:last-child) .t-body{padding-bottom:28px;}
   .t-time{
     text-align:right;font-family:var(--display);font-weight:700;font-size:15px;color:var(--navy);
     padding-top:1px;white-space:nowrap;
@@ -184,7 +184,7 @@
   .t-body{position:relative;padding-left:26px;border-left:2px solid var(--line);padding-bottom:2px;}
   .t-row:last-child .t-body{border-color:transparent;}
   .t-body::before{
-    content:"";position:absolute;left:-8px;top:3px;width:14px;height:14px;border-radius:50%;
+    content:"";position:absolute;left:-11px;top:3px;width:14px;height:14px;border-radius:50%;
     background:#fff;border:3px solid var(--blue);
   }
   .t-row.hl .t-body::before{background:var(--coral);border-color:var(--coral);}
@@ -256,11 +256,10 @@
   .foot .org{font-size:12.5px;color:var(--muted);margin-top:4px;letter-spacing:.04em;}
   .foot .ivi{margin-top:14px;font-family:var(--display);font-weight:700;letter-spacing:.04em;color:var(--blue-deep);}
 
-  /* reveal — visible by default; only hidden when JS is active (progressive enhancement) */
-  .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease;}
-  .js .reveal{opacity:0;transform:translateY(18px);}
-  .js .reveal.in{opacity:1;transform:none;}
-  @media (prefers-reduced-motion:reduce){.reveal,.js .reveal{opacity:1;transform:none;}}
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 
   @media (max-width:560px){
     body{padding:14px 8px 40px;}
@@ -288,7 +287,7 @@
       <div class="date-badge">
         <div><div class="big">JUN 22</div><div class="sub">Monday · 2026</div></div>
         <div class="sep"></div>
-        <div><div class="big">12:00</div><div class="sub">Lobby</div></div>
+        <div><div class="big">11:30</div><div class="sub">Lobby</div></div>
       </div>
     </header>
 
@@ -316,7 +315,7 @@
       <div class="timeline">
         <div class="t-row reveal">
           <div class="t-time">By<span>12:00</span></div>
-          <div class="t-body"><h4>Grab the gift &amp; take your table</h4><p>Just before 12:00, pick up your trainee's gift (Room 1115S, 1F), then head to your table and wait for them there.</p></div>
+          <div class="t-body"><h4>Grab the gift &amp; take your table</h4><p>Just before 12:00, pick up your trainee's gift (Room 1115M, 1F), then head to your table and wait for them there.</p></div>
         </div>
         <div class="t-row hl reveal">
           <div class="t-time">12:00<span>–12:30</span></div>
@@ -328,7 +327,7 @@
         </div>
         <div class="t-row reveal">
           <div class="t-time">15:00<span>–16:30</span></div>
-          <div class="t-body"><h4>Thank-you gift collection</h4><p>Pick up your thank-you gift (Room 1115S, 1F).</p></div>
+          <div class="t-body"><h4>Thank-you gift collection</h4><p>Pick up your thank-you gift (Room 1115M, 1F).</p></div>
         </div>
         <div class="reveal" style="margin-top:16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;background:var(--blue-tint);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:12px 16px;">
           <svg style="flex-shrink:0;margin-top:1px;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="#0090D4" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10" stroke="#0090D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -359,7 +358,16 @@
       </div>
       <h2 class="reveal">Claim your spot at the table.</h2>
       <p class="reveal" style="margin-top:12px;font-size:15px;color:#C7DBEA;max-width:48ch;text-wrap:pretty;">For questions, reach out to <b style="color:#fff;"><a href="mailto:Jieun.Roh@ivi.int" style="color:#fff;text-decoration:underline;">Jieun.Roh@ivi.int</a></b>.<br/><span style="color:#9FD4F0;">Please sign up by <b style="color:#9FD4F0;">June 16.</b></span></p>
-      <a class="cta reveal" href="https://forms.microsoft.com/Pages/ResponsePage.aspx?id=WZuQ3NV_c06ysYO6EH61ChmqDa4H4_FCjTfJ1slCNuhUOTNOU1kxRkZIMDE5MUc2RjlJUk9POTdaWC4u" target="_blank">Count me in <span class="arr">→</span></a>
+      <style>
+        .rsvp-toggle{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+        .rsvp-closed-note{display:none;margin-top:18px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:16px 18px;font-size:15px;line-height:1.55;color:#ffffff;max-width:46ch;}
+        .rsvp-closed-note strong{color:#9FD4F0;}
+        #rsvp-closed:checked ~ .cta{opacity:.45;pointer-events:none;filter:grayscale(.35);}
+        #rsvp-closed:checked ~ .rsvp-closed-note{display:block;}
+      </style>
+      <input type="checkbox" id="rsvp-closed" class="rsvp-toggle" aria-hidden="true" tabindex="-1" />
+      <label for="rsvp-closed" class="cta reveal" style="cursor:pointer;">Count me in <span class="arr">→</span></label>
+      <p class="rsvp-closed-note">&#128274; <strong>Registration closed</strong> &mdash; all 12 host spots have been filled. Thank you for your interest!</p>
     </section>
 
     <!-- FOOTER -->
@@ -373,8 +381,6 @@
 <script>
   // staggered scroll reveal
   (function(){
-    // mark JS as available so the hide-then-reveal animation only runs in real browsers
-    document.documentElement.classList.add('js');
     var io=new IntersectionObserver(function(entries){
       entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
     },{threshold:.15});
